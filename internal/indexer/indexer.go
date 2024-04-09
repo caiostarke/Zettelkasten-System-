@@ -12,11 +12,18 @@ func IndexFiles(path string) (string, error) {
 	var htmlContent string
 
 	err := filepath.Walk(path, func(path string, info os.FileInfo, err error) error {
-		if info.IsDir() || info.Name() == "style.css" {
+
+		if info.Name() == "styles" || strings.Contains(info.Name(), "css") {
 			return nil
 		}
 
-		link := fmt.Sprintf(`<a href="%s">%s</a><br>`, strings.Replace(path, "storage/", "notes/", 1), info.Name())
+		var link string
+
+		if info.IsDir() && info.Name() != "storage" && info.Name() != "categories" && info.Name() != "tags" {
+			link = fmt.Sprintf(`<div class="folder"><span>Folder</span><h2>%s</h2></div>`, info.Name())
+		} else if !info.IsDir() {
+			link = fmt.Sprintf(`<a href="%s">%s</a>`, strings.Replace(path, "storage/", "notes/", 1), strings.Split(info.Name(), ".")[0])
+		}
 
 		htmlContent += link
 

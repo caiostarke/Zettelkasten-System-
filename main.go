@@ -12,6 +12,8 @@ import (
 const STORAGE_DIR = "./storage"
 
 func main() {
+	fs := http.FileServer(http.Dir(STORAGE_DIR))
+
 	http.HandleFunc("/notes/", func(w http.ResponseWriter, r *http.Request) {
 		filePath := r.URL.Path[len("/notes/"):]
 
@@ -38,9 +40,10 @@ func main() {
 		</body>
 		</html>
 	`, htmlContent)
+
 	})
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/notes", func(w http.ResponseWriter, r *http.Request) {
 		htmlContent, err := indexer.IndexFiles(STORAGE_DIR)
 		if err != nil {
 			http.Error(w, "Error indexing files", http.StatusInternalServerError)
@@ -54,16 +57,20 @@ func main() {
 		<html>
 		<head>
 			<title>File Index</title>
-			<link rel="stylesheet" href="/styles/style.css">
+			<link rel="stylesheet" href="/styles/notes-indexer.css">
 		</head>
 		<body>
 			<h1>File Index</h1>
-			%s <!-- HTML content with links to files -->
-		</body>
+			<div class="links--list">
+				%s <!-- HTML content with links to files -->
+			</div>
+			</body>
 		</html>
 	`, htmlContent)
 
 	})
+
+	http.Handle("/", fs)
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
