@@ -17,6 +17,6 @@ public function getImageUrlAttribute()
 
 ```
 
-the name of the function related to the new field append must follow the laravel convetion to the accessor, so, if u are appending the image_url field u must name your function as getImageUrlAttribute.
+the name of the function related to the new field appended must follow the laravel convetion to the accessor, so, if u are appending the image_url field u must name your function as getImageUrlAttribute.
 
 name convention => get[AttributeName]Attribute
