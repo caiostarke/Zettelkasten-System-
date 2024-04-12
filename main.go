@@ -34,9 +34,16 @@ func main() {
 		<head>
 			<title>Markdown File</title>
 			<link rel="stylesheet" href="/styles/style.css">
+
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
 		</head>
 		<body>
 			%s <!-- Markdown content converted to HTML -->
+
+			<script>
+				hljs.highlightAll();
+			</script>
 		</body>
 		</html>
 	`, htmlContent)
